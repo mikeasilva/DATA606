@@ -13,7 +13,7 @@
 #' @export
 startLab <- function(l, dest_dir = getwd(),
 					 file.prefix = paste0(Sys.info()['user'], '-')) {
-	path <- paste0(find.package('DATA606'), '/Labs/', l)
+	path <- getLabsPath(l)
 	file.copy(path, dest_dir, recursive=TRUE, overwrite=FALSE)
 	rmds <- list.files(paste0(dest_dir, '/', l), pattern='.Rmd')
 	new_file <- paste0(dest_dir, '/', l, '/', file.prefix, rmds[1])
@@ -38,7 +38,7 @@ startLab <- function(l, dest_dir = getwd(),
 #' @param l the lab to open.
 #' @export
 viewLab <- function(l) {
-	path <- paste0(find.package('DATA606'), '/Labs/', l)
+	path <- getLabsPath(l)
 	htmls <- list.files(path, pattern='.html')
 	if(length(htmls) > 0) {
 		system(paste0("open '", path, "/", htmls[1], "'"))
@@ -52,8 +52,24 @@ viewLab <- function(l) {
 #'
 #' @export
 getLabs <- function() {
-	labs <- list.dirs(path=paste0(find.package('DATA606'), '/Labs'),
+	labs <- list.dirs(path=getLabsPath(),
 					  recursive=FALSE, full.names=FALSE)
 	#return(substr(labs, 1, nchar(labs) - 4))
 	return(labs)
+}
+
+#' Get's the path of the labs.
+#'
+#' @param l the lab to open (Optional).
+#' @export
+getLabsPath <- function(l=NULL){
+  path <- paste0(find.package('DATA606'), '/Labs/', l)
+  if(file.exists(path)){
+    return(path)
+  }
+  path <- paste0(find.package('DATA606'), '/labs/', l)
+  if(file.exists(path)){
+    return(path)
+  }
+  stop(paste0("Valid path to Lab (", l, ") not found."))
 }
