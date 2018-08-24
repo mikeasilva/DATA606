@@ -9,6 +9,9 @@ Description: Package to support CUNY DATA606 Statistics and Probability for
     Analytics course.
 License: Creative Commons
 LazyData: TRUE
+Imports:
+    shiny,
+    openintro
 Suggests:
     R.rsp
 VignetteBuilder: R.rsp
